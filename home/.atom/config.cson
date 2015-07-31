@@ -1,0 +1,33 @@
+"*":
+  "exception-reporting":
+    userId: "aacc5f15-c803-dd72-8a02-15c831e8e7ae"
+  welcome:
+    showOnStartup: false
+  core:
+    themes: [
+      "one-dark-ui"
+      "railscast-theme"
+    ]
+    disabledPackages: [
+      "file-type-icons"
+      "background-tips"
+    ]
+    ignoredNames: [
+      ".git"
+      ".idea"
+    ]
+  editor:
+    invisibles: {}
+    fontSize: 12
+    fontFamily: "Monaco"
+    lineHeight: 1.4
+    showInvisibles: true
+    preferredLineLength: 120
+  autosave:
+    enabled: true
+  "save-session":
+    dataSaveFolder: "/Users/ryan/.atom/packages/save-session/projects"
+  "tree-view":
+    hideIgnoredNames: true
+  whitespace:
+    ignoreWhitespaceOnCurrentLine: false
