@@ -1,6 +1,6 @@
 {
   "name": "file-type-icons",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Changes the icon for files in the Tree View and Tabs to reflect the file's type",
   "author": {
     "name": "Lee Dohm",
@@ -27,10 +27,10 @@
     "url": "https://github.com/lee-dohm/file-type-icons/issues"
   },
   "homepage": "https://github.com/lee-dohm/file-type-icons",
-  "_id": "file-type-icons@0.7.0",
-  "_shasum": "3d87746e8120ce2df1012b50bd03cafa6aec3ea5",
-  "_resolved": "file:../d-115631-79202-1v988l0/package.tgz",
-  "_from": "../d-115631-79202-1v988l0/package.tgz",
+  "_id": "file-type-icons@0.7.1",
+  "_shasum": "679404ff5570dfe745319b90c78f436f99f9a92f",
+  "_resolved": "file:../d-11574-94030-j8wjt2/package.tgz",
+  "_from": "../d-11574-94030-j8wjt2/package.tgz",
   "_atomModuleCache": {
     "version": 1,
     "dependencies": [],

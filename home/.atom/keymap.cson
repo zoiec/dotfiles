@@ -23,4 +23,18 @@
 # This file uses CoffeeScript Object Notation (CSON).
 # If you are unfamiliar with CSON, you can read more about it here:
 # https://github.com/bevry/cson#what-is-cson
-'cmd-shift-n': 'fuzzy-finder:toggle-file-finder'
+
+# 'atom-text-editor':
+#   'cmd+d':'atom-text-editor:not([mini])'
+# 'atom-text-editor:not([mini])':
+#   'cmd+d': 'editor:delete-line'
+
+'atom-text-editor:not([mini])':
+  'cmd-d': 'editor:delete-line'
+  'cmd-r': 'find-and-replace:show-replace'
+  'cmd-g': 'go-to-line:toggle'
+
+# macros using atom-macros
+'atom-text-editor:not([mini])':
+  'cmd-p': 'macros:pry'
+  'cmd-o': 'macros:save_and_open_page'
