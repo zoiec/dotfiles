@@ -15,6 +15,7 @@
       ".git"
       ".idea"
     ]
+    excludeVcsIgnoredPaths: false
   editor:
     invisibles: {}
     fontSize: 12
