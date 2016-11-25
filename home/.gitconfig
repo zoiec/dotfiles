@@ -1,6 +1,9 @@
 [user]
-  name = Ryan Jones
-  email = ryan@system88.com
+	name = Zoie Carnegie
+	email = zoie.carnegie@gmail.com
+
+[commit]
+  template = ~/.gitmessage
 
 [status]
   relativePaths = false
