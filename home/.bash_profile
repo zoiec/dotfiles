@@ -21,11 +21,7 @@ fi
 
 if [ -f ~/.git-completion.bash ]; then
     . ~/.git-completion.bash
-  fi
-
-export HISTSIZE=5000
-export HISTFILESIZE=10000
-# export SSL_CERT_FILE="/usr/local/etc/openssl/certs/cert.pem"
+fi
 
 if [[ -s "${HOME}/.bash/bashrc" ]] ; then
   bashrc_local_install=1
