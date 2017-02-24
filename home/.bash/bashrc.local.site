@@ -1,0 +1,34 @@
+#---------------------------------------------------------------
+# Local (system) bashrc File
+#---------------------------------------------------------------
+
+# Skip this config if we aren't in bash
+[[ -n "${BASH_VERSION}" ]] || return
+
+#---------------------------------------------------------------
+# Set Global Environment Variables
+#---------------------------------------------------------------
+#RUBY_MANAGER=
+
+
+#---------------------------------------------------------------
+# Set Host Prompt Color
+#---------------------------------------------------------------
+# The following color keywords are permitted:
+#
+# Normal colors
+# black red green yellow blue magenta cyan white default
+# 
+# Emphasized (bolded) colors
+# eblack ered egreen eyellow eblue emagenta ecyan ewhite
+#---------------------------------------------------------------
+#PROMPT_COLOR=
+
+# If you want a different prompt color when logged in over SSH
+#REMOTE_PROMPT_COLOR=
+
+
+#---------------------------------------------------------------
+# Host ssh aliases
+#---------------------------------------------------------------
+#alias host="ssh host.domain.com"

@@ -1,0 +1,111 @@
+#!/usr/bin/env bash
+
+if [[ -d "${HOME}/.bash" ]] ; then
+  printf "\n>> ${HOME}/.bash must not exist so not installing.\n\n"
+  exit 2
+fi
+
+case "$(uname -s)" in
+  SunOS)  egrep_cmd=/usr/gnu/bin/egrep  ;;
+  *)      egrep_cmd=egrep               ;;
+esac
+
+if command -v git >/dev/null ; then
+  printf "===> Cloning git repository to ${HOME}/.bash ...\n"
+  builtin cd "${HOME}" && \
+    ( git clone --depth 1 git://github.com/ryanjones/bashrc.git .bash || \
+    git clone http://github.com/ryanjones/bashrc.git .bash )
+elif command -v curl >/dev/null && command -v python >/dev/null; then
+  tarball_install=1
+  case "$(uname -s)" in
+    SunOS)  tar_cmd="$(which gtar)"  ;;
+    *)      tar_cmd="$(which tar)"   ;;
+  esac
+  [[ -z "$tar_cmd" ]] && \
+    printf ">>>> tar command not found on path, aborting.\n" && exit 13
+
+  printf "===> Git not found, so downloading tarball to ${HOME}/.bash ...\n"
+  mkdir -p "${HOME}/.bash"
+  curl -LsSf http://github.com/ryanjones/bashrc/tarball/master | \
+    ${tar_cmd} xvz -C${HOME}/.bash --strip 1
+  printf "===> Determining version date from github api ...\n"
+  tip_date="$(curl -sSL \
+    http://github.com/api/v2/json/commits/show/ryanjones/bashrc/HEAD | \
+    python -c 'import sys; import json; j = json.loads(sys.stdin.read()); print j["commit"]["committed_date"];')"
+  if [ "$?" -ne 0 ] ; then tip_date="UNKNOWN" ; fi
+  printf "TARBALL $tip_date" > "${HOME}/.bash/tip.date"
+else
+  printf "\n>> Neither git nor curl (with python) could be found on path so not installing.\n\n"
+  exit 3
+fi
+
+printf "===> Creating ${HOME}/.bash/bashrc.local for system-specific configuration ...\n"
+cp "${HOME}/.bash/bashrc.local.site" "${HOME}/.bash/bashrc.local"
+
+case "$(uname -s)" in
+  Darwin)   color="green" ; remote_color="yellow" ;;
+  Linux)    color="cyan"  ;;
+  OpenBSD)  color="red"   ;;
+  CYGWIN*)  color="black" ;;
+  SunOS)
+    if /usr/sbin/zoneadm list -pi | $egrep_cmd :global: >/dev/null ; then
+      color="magenta" # root zone
+    else
+      color="cyan"    # non-global zone
+    fi
+    ;;
+esac
+
+printf "Setting prompt color to be \"$color\" ...\n"
+perl -pi -e "s|^#?PROMPT_COLOR=.*$|PROMPT_COLOR=$color|g" \
+  "${HOME}/.bash/bashrc.local"
+unset color
+
+if [[ -n "$remote_color" ]] ; then
+  printf "Setting remote prompt color to be \"$remote_color\" ...\n"
+  perl -pi -e \
+    "s|^#?REMOTE_PROMPT_COLOR=.*$|REMOTE_PROMPT_COLOR=$remote_color|g" \
+    "${HOME}/.bash/bashrc.local"
+  unset remote_color
+fi
+
+case "$(uname -s)" in
+  *) p="${HOME}/.bash_profile" ;;
+esac
+
+if [[ -r "$p" ]] && $egrep_cmd -q '${HOME}/.bash/bashrc' $p 2>&1 >/dev/null ; then
+  printf ">> Mention of \${HOME}/.bash/bashrc found in \"$p\"\n"
+  printf ">> You can add the following lines to get sourced:\n"
+  printf ">>   if [[ -s \"\${HOME}/.bash/bashrc\" ]] ; then\n"
+  printf ">>     bashrc_local_install=1\n"
+  printf ">>     bashrc_prefix=\${HOME}/.bash\n"
+  printf ">>     export bashrc_local_install bashrc_prefix\n"
+  printf ">>     source \"\${bashrc_prefix}/bashrc\"\n"
+  printf ">>   fi\n"
+else
+  printf "===> Adding source hook into \"$p\" ...\n"
+  cat >> $p <<END_OF_PROFILE
+ 
+if [[ -s "\${HOME}/.bash/bashrc" ]] ; then
+  bashrc_local_install=1
+  bashrc_prefix="\${HOME}/.bash"
+  export bashrc_local_install bashrc_prefix
+  source "\${bashrc_prefix}/bashrc"
+fi
+END_OF_PROFILE
+fi
+
+# unless this is a tarball install, run a bashrc update
+if [[ -z "$tarball_install" ]] ; then
+  printf "===> Updating bashrc to current ...\n"
+  bash -i -c "bashrc_local_install=1; bashrc_prefix=\"\${HOME}/.bash\"; source \${bashrc_prefix}/bashrc && bashrc update"
+fi
+
+printf "\n\n    #---------------------------------------------------------------\n"
+printf "    # Installation of bashrc complete. To activate either exit\n"
+printf "    # this shell or type: 'source ${p}'.\n"
+printf "    #\n"
+printf "    # To check for updates to bashrc, run: 'bashrc check'.\n"
+printf "    #\n"
+printf "    # To keep bashrc up to date, periodically run: 'bashrc update'.\n"
+printf "    #---------------------------------------------------------------\n\n"

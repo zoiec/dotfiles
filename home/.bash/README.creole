@@ -1,0 +1,20 @@
+= Installation =
+
+== Local (User) Deployment ==
+{{{
+bash < <( curl -L https://raw.githubusercontent.com/ryanonrails/bashrc/master/contrib/install-local )
+}}}
+
+== Delay Loading Your Local Deployment ==
+Simply wrap the code in your {{{${HOME}/.bash_profile}}} with a function, like so:
+
+{{{
+bl() {
+  if [[ -s "${HOME}/.bash/bashrc" ]] ; then
+    bashrc_local_install=1
+    bashrc_prefix="${HOME}/.bash"
+    export bashrc_local_install bashrc_prefix
+    source "${bashrc_prefix}/bashrc"
+  fi
+}
+}}}
